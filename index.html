@@ -1,221 +1,162 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Receipt</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ticket</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
-  <style>
-    body {
-      font-family: "Courier New", Courier, monospace;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: auto;
-      min-height: 100vh;
-      gap: 20px;
-    }
-
-    .pdf {
-      width: 330px;
-      height: 450px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      background: #fff;
-      border: 1px solid #ddd;
-    }
-
-    .top_code {
-      font-size: 12px;
-      font-weight: thin;  
-      margin: 5px 0;
-      padding: 5px 10px;
-      letter-spacing: 1px;
-    }
-
-    img {
-      width: auto;
-      height: 170px;
-    }
-
-    .price {
-      text-align: center;
-      padding-top: 17px;
-    }
-
-    .price p {
-      margin: 2px 0;
-      line-height: 0.8;
-    }
-
-    .pera_ticket {
-      margin: 5px 0;
-      padding: 5px 10px;
-    }
-
-    .time {
-      letter-spacing: 1px;
-    }
-
-    .details {
-      padding-right: 15px;
-      padding-top: 20px;
-      margin: 2px 0;
-      line-height: 0;
-    }
-
-    .details p {
-      font-size: 12px;
-      font-weight: normal;
-    }
-
-    /* control panel (PDF me render nahi hoga) */
-    .controls {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      max-width: 280px
-    }
-
-    .controls label {
-      font-size: 12px;
-      margin-top: 6px
-    }
-    @media (max-width: 500px) {
-      main {
-     flex-direction: column !important;
-  }
+<style>
+body {
+  font-family: "Courier New", Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: #f0f0f0;
+  gap: 20px;
 }
-  </style>
+.pdf {
+  width: 849px;
+  height: 1280px;
+  background: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.top_code {
+  font-size: 44px;
+  font-weight: 500;
+  margin: 10px 0;
+}
+img.qr {
+  width: auto;
+  height: 540px;
+  margin: 10px 0;
+}
+.price {
+  text-align: center;
+  padding-top: 15px;
+}
+.price span {
+  display: inline-block;
+}
+.details {
+  padding-top: 20px;
+  width: 100%;
+  font-size: 40px;
+  line-height: 1.5;
+}
+.controls {
+  max-width: 300px;
+}
+</style>
 </head>
-
-
 <body>
 
-  <!-- RECEIPT (PDF/Image area) -->
-  <main class="d-flex align-items-center justify-content-center gap-5">
-    <div class="pdf" id="pdfRoot">
-      <p class="top_code" id="topCode">
-        32-001-2507-02810-0011-0
+<main class="d-flex gap-4">
+  <div class="pdf" id="pdfRoot">
+    <p class="top_code" id="topCode">32-001-2507-02810-0011-0</p>
+    <img class="qr" src="./img/qrcode.jpeg" alt="QR Code" />
+    <div class="price">
+      <p style="font-size:54px; font-weight: bold;">
+        <span id="ticketPrice">120</span> 
+        <span style="font-family: Arial, Helvetica, sans-serif; font-size:45px; font-weight:400;">PKR</span>
       </p>
-      <img src="./img/qrcode.jpeg" alt="">
-      <div class="price">
-        <p style="font-size: 16px; font-weight: bold;">120
-          <span style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 400;">PKR</span>
-        </p>
-        <p style="font-size: 12px; font-weight: normal;" class="pera_ticket">120-Single Ticket Adult</p>
-      </div>
-      <div class="details">
-        <p id="pDate">Purchase Date: 13/07/2025</p>
-        <p id="pTime" class="time">08:17:15</p>
-        <p>
-          <span>Valid Until</span><span style="padding-left: 15px;">:</span>&nbsp;<span id="untilDate">13/07/2025</span>
-          <span style="padding-left: 0px;" id="untilTime">10:17</span>
-        </p>
-        <p>
-          <span>Sam Id</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="padding-left: 8px;">:</span>&nbsp;05220409
-        </p>
-        <p>
-          <span>Kiosk/Term No</span><span style="padding-left: 1px;">:</span>&nbsp;<span id="kioskNo">1230000001/10122</span>
-        </p>
-      </div>
+      <p class="pera_ticket" style="font-size:38px;"> <span id="ticketPriceText">120</span>-Single Ticket Adult</p>
     </div>
-    <aside class="controls">
-      <div class="card p-3 shadow-sm">
-        <strong>Controls</strong>
-        <label class="form-label">Code Suffix (after 32-001-)</label>
-        <input id="codeSuffix" class="form-control form-control-sm" value="2507-02810-0011-0" />
-  
-        <label class="form-label">Term Suffix (after 1230000001/)</label>
-        <input id="termSuffix" class="form-control form-control-sm" value="10122" />
-  
-        <button id="downloadBtn" class="btn btn-dark btn-sm mt-3">Download PDF (591×850)</button>
-        <button id="downloadImgBtn" class="btn btn-primary btn-sm mt-2">Download Image</button>
-        <small class="text-muted mt-2">Time live hai; Valid Until = +2 hours (no seconds).</small>
-      </div>
-    </aside>
-  </main>
+    <div class="details">
+      <p id="pDate">Purchase Date: 13/07/2025</p>
+      <p id="pTime">08:17:15</p>
+      <p>Valid Until <span style="padding-left: 24px;">:</span> <span id="untilDate">13/07/2025</span> <span id="untilTime">10:17</span></p>
+      <p>Sam Id<span style="padding-left: 169px;">:</span> <span id="samId">05220409</span></p>
+      <p>Kiosk/Term No<span style="padding-left: 2px;">:</span> <span id="kioskNo">1230000001/10122</span></p>
+    </div>
+  </div>
 
-  <!-- SMALL CONTROL PANEL -->
- 
+  <aside class="controls">
+    <div class="card p-3 shadow-sm">
+      <strong>Controls</strong>
+      <label>Code Suffix</label>
+      <input id="codeSuffix" class="form-control form-control-sm" value="2507-02810-0011-0" />
+      <label>Term Suffix</label>
+      <input id="termSuffix" class="form-control form-control-sm" value="10122" />
+      <label>Sam Id</label>
+      <input id="samIdInput" class="form-control form-control-sm" value="05220409" />
+      <label>Ticket Price</label>
+      <input id="priceInput" type="number" class="form-control form-control-sm" value="120" />
+      <button id="downloadBtn" class="btn btn-dark btn-sm mt-3">Download PDF & PNG</button>
+    </div>
+  </aside>
+</main>
 
-  <!-- libs -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <script>
-    // helpers
-    const pad = n => String(n).padStart(2, '0');
-    const fmtDate = d => `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
-    const fmtTime = d => `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    const fmtTimeNoSec = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+<script>
+const topCodeEl = document.getElementById('topCode');
+const pDateEl = document.getElementById('pDate');
+const pTimeEl = document.getElementById('pTime');
+const untilDateEl = document.getElementById('untilDate');
+const untilTimeEl = document.getElementById('untilTime');
+const kioskNoEl = document.getElementById('kioskNo');
+const samIdEl = document.getElementById('samId');
+const ticketPriceEl = document.getElementById('ticketPrice');
+const ticketPriceTextEl = document.getElementById('ticketPriceText');
 
-    // elements
-    const topCodeEl = document.getElementById('topCode');
-    const pDateEl = document.getElementById('pDate');
-    const pTimeEl = document.getElementById('pTime');
-    const untilDateEl = document.getElementById('untilDate');
-    const untilTimeEl = document.getElementById('untilTime');
-    const kioskNoEl = document.getElementById('kioskNo');
+const codeSuffixInput = document.getElementById('codeSuffix');
+const termSuffixInput = document.getElementById('termSuffix');
+const samIdInput = document.getElementById('samIdInput');
+const priceInput = document.getElementById('priceInput');
 
-    const codeSuffixInput = document.getElementById('codeSuffix');
-    const termSuffixInput = document.getElementById('termSuffix');
+const TOP_PREFIX = '32-001-';
+const KIOSK_PREFIX = '1230000001/';
 
-    const TOP_PREFIX = '32-001-';
-    const KIOSK_PREFIX = '1230000001/';
+function applyEdits() {
+  topCodeEl.textContent = TOP_PREFIX + codeSuffixInput.value;
+  kioskNoEl.textContent = KIOSK_PREFIX + termSuffixInput.value;
+  samIdEl.textContent = samIdInput.value;
+  ticketPriceEl.textContent = priceInput.value;
+  ticketPriceTextEl.textContent = priceInput.value;
+}
+[codeSuffixInput, termSuffixInput, samIdInput, priceInput].forEach(i => i.addEventListener('input', applyEdits));
+applyEdits();
 
-    // update editable parts
-    const applyEdits = () => {
-      topCodeEl.textContent = TOP_PREFIX + (codeSuffixInput.value || '');
-      kioskNoEl.textContent = KIOSK_PREFIX + (termSuffixInput.value || '');
-    };
-    codeSuffixInput.addEventListener('input', applyEdits);
-    termSuffixInput.addEventListener('input', applyEdits);
-    applyEdits();
+function tick() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  pDateEl.textContent = `Purchase Date: ${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+  pTimeEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  const plus2 = new Date(now.getTime() + 2*60*60*1000);
+  untilDateEl.textContent = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+  untilTimeEl.textContent = `${pad(plus2.getHours())}:${pad(plus2.getMinutes())}`;
+}
+tick();
+setInterval(tick, 1000);
 
-    // live clock + validity
-    function tick() {
-      const now = new Date();
-      pDateEl.textContent = `Purchase Date: ${fmtDate(now)}`;
-      pTimeEl.textContent = fmtTime(now);
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  const receipt = document.getElementById('pdfRoot');
+  const canvas = await html2canvas(receipt, { scale: 2, useCORS:true });
+  const imgData = canvas.toDataURL('image/png');
 
-      const plus2 = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-      untilDateEl.textContent = fmtDate(now);
-      untilTimeEl.textContent = fmtTimeNoSec(plus2);
-    }
-    tick();
-    setInterval(tick, 1000);
+  // PDF
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'px', [849,1280]);
+  pdf.addImage(imgData, 'PNG', 0,0,849,1280);
+  pdf.save('ticket.pdf');
 
-    // PNG Download
-    document.getElementById('downloadImgBtn').addEventListener('click', async () => {
-      const pdfEl = document.getElementById('pdfRoot');
-      const canvas = await html2canvas(pdfEl, { scale: 2 });
-      const dataURL = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = dataURL;
-      link.download = 'ticket.png';
-      link.click();
-    });
-
-    // PDF Download (same design via screenshot)
-    document.getElementById('downloadBtn').addEventListener('click', async () => {
-      const pdfEl = document.getElementById('pdfRoot');
-      const canvas = await html2canvas(pdfEl, { scale: 2 });
-      const imgData = canvas.toDataURL('image/png');
-
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: [591, 850]
-      });
-
-      doc.addImage(imgData, 'PNG', 0, 0, 591, 850);
-      doc.save('ticket.pdf');
-    });
-  </script>
+  // PNG
+  canvas.toBlob(blob => {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'ticket.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, 'image/png');
+});
+</script>
 </body>
 </html>
