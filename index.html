@@ -84,13 +84,19 @@
       font-size: 12px;
       margin-top: 6px
     }
+    @media (max-width: 500px) {
+      main {
+     flex-direction: column !important;
+  }
+}
   </style>
 </head>
+
 
 <body>
 
   <!-- RECEIPT (PDF/Image area) -->
-  <main>
+  <main class="d-flex align-items-center justify-content-center gap-5">
     <div class="pdf" id="pdfRoot">
       <p class="top_code" id="topCode">
         32-001-2507-02810-0011-0
@@ -117,23 +123,24 @@
         </p>
       </div>
     </div>
+    <aside class="controls">
+      <div class="card p-3 shadow-sm">
+        <strong>Controls</strong>
+        <label class="form-label">Code Suffix (after 32-001-)</label>
+        <input id="codeSuffix" class="form-control form-control-sm" value="2507-02810-0011-0" />
+  
+        <label class="form-label">Term Suffix (after 1230000001/)</label>
+        <input id="termSuffix" class="form-control form-control-sm" value="10122" />
+  
+        <button id="downloadBtn" class="btn btn-dark btn-sm mt-3">Download PDF (591×850)</button>
+        <button id="downloadImgBtn" class="btn btn-primary btn-sm mt-2">Download Image</button>
+        <small class="text-muted mt-2">Time live hai; Valid Until = +2 hours (no seconds).</small>
+      </div>
+    </aside>
   </main>
 
   <!-- SMALL CONTROL PANEL -->
-  <aside class="controls">
-    <div class="card p-3 shadow-sm">
-      <strong>Controls</strong>
-      <label class="form-label">Code Suffix (after 32-001-)</label>
-      <input id="codeSuffix" class="form-control form-control-sm" value="2507-02810-0011-0" />
-
-      <label class="form-label">Term Suffix (after 1230000001/)</label>
-      <input id="termSuffix" class="form-control form-control-sm" value="10122" />
-
-      <button id="downloadBtn" class="btn btn-dark btn-sm mt-3">Download PDF (591×850)</button>
-      <button id="downloadImgBtn" class="btn btn-primary btn-sm mt-2">Download Image</button>
-      <small class="text-muted mt-2">Time live hai; Valid Until = +2 hours (no seconds).</small>
-    </div>
-  </aside>
+ 
 
   <!-- libs -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
