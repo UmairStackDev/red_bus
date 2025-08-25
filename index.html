@@ -52,11 +52,19 @@ img.qr {
 .controls {
   max-width: 300px;
 }
+main{
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 </head>
 <body>
 
-<main class="d-flex gap-4">
+<main class="d-flex gap-4 ">
   <div class="pdf" id="pdfRoot">
     <p class="top_code" id="topCode">32-001-2507-02810-0011-0</p>
     <img class="qr" src="./img/qrcode.jpeg" alt="QR Code" />
