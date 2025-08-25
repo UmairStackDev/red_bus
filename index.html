@@ -25,6 +25,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  left: -9999px; /* screen se bahar */
+  top: 0;
 }
 .top_code {
   font-size: 44px;
@@ -50,7 +53,8 @@ img.qr {
   line-height: 1.5;
 }
 .controls {
-  max-width: 300px;
+  max-width: 400px;
+  width: 400px;
 }
 main{
   display: flex;
@@ -65,7 +69,7 @@ main{
 <body>
 
 <main class="d-flex gap-4 ">
-  <div class="pdf" id="pdfRoot">
+  <div class="pdf" id="pdfRoot" style="visibility: hidden;">
     <p class="top_code" id="topCode">32-001-2507-02810-0011-0</p>
     <img class="qr" src="./img/qrcode.jpeg" alt="QR Code" />
     <div class="price">
@@ -146,13 +150,22 @@ setInterval(tick, 1000);
 
 document.getElementById('downloadBtn').addEventListener('click', async () => {
   const receipt = document.getElementById('pdfRoot');
+
+  // temporarily show (force render)
+  receipt.style.visibility = "visible";
+  receipt.style.position = "absolute";
+  receipt.style.left = "-9999px"; // screen se bahar
+
+  // wait ek repaint ka
+  await new Promise(r => setTimeout(r, 100));
+
   const canvas = await html2canvas(receipt, { scale: 2, useCORS:true });
   const imgData = canvas.toDataURL('image/png');
 
   // PDF
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF('p', 'px', [849,1280]);
-  pdf.addImage(imgData, 'PNG', 0,0,849,1280);
+  pdf.addImage(imgData, 'PNG', 0, 0, 849, 1280);
   pdf.save('ticket.pdf');
 
   // PNG
@@ -164,7 +177,11 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     link.click();
     document.body.removeChild(link);
   }, 'image/png');
+
+  // hide again
+  receipt.style.visibility = "hidden";
 });
+
 </script>
 </body>
 </html>
