@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ticket</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+body {
+  font-family: "Courier New", Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: #f0f0f0;
+  gap: 20px;
+}
+.pdf {
+  width: 969px;
+  height: 1620px;
+  background: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120px;
+  position: absolute;
+  left: -9999px; 
+  top: 0;
+}
+.top_code {
+  font-size: 60px;
+  font-weight: 500;
+  margin: 10px 0; 
+  padding-left: 54px;
+}
+.top_code .dash {
+  font-size: 0px;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 5px;
+}
+img.qr {
+  width: auto;
+  height: 665px;
+  margin: 10px 0;
+}
+.price {
+  text-align: center;
+  padding-top: 15px;
+  line-height: 1.2;
+  padding-bottom: 55px;
+  padding-top: 50px;
+  padding-left: 40px;
+}
+.price span {
+  display: inline-block;
+}
+.details {
+  padding-top: 20px;
+  width: 100%;
+  font-size: 50px;
+  line-height: 0.8;
+  white-space: nowrap;
+}
+.controls {
+  max-width: 330px;
+  width: 400px;
+}
+main{
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  align-items: center;
+  justify-content: center;
+}
+.pera_ticket{
+  padding-left: 55px;
+}
+</style>
+</head>
+<body>
+
+<main class="d-flex gap-4 ">
+  <div id="welcomeBar" class="hidden bg-white dark:bg-gray-800 shadow-md p-4 d-flex justify-between gap-3 align-items-center">
+    <div>
+        <span class="text-lg">Welcome, <span id="welcomeName" class="font-semibold text-indigo-600 dark:text-indigo-400"></span>!</span>
+    </div>
+    <button id="logoutBtn" class="btn btn-sm btn-outline-dark">Logout</button>
+  </div>
+
+  <div class="pdf" id="pdfRoot" style="visibility:hidden;">
+    <p class="top_code" id="topCode">
+      32<span class="dash">-</span>001<span class="dash">-</span>2507<span class="dash">-</span>02810<span class="dash">-</span>0011<span class="dash">-</span>0
+    </p>
+    
+    <br>
+    <img class="qr" src="./img/qrcode.jpeg" alt="QR Code" />
+    <div class="price">
+      <p style="font-family: Arial, Helvetica, sans-serif ; font-size:63px; font-weight:400; letter-spacing: 0.9px; margin-bottom: 4px; color: #222; ">
+        <span id="ticketPrice" style="letter-spacing: 2px; padding-left:50px;">120</span> 
+        <span style="font-family: Arial, Helvetica, sans-serif; font-size:63px; font-weight:400; padding-left: 30px;">PKR</span>
+      </p>
+      
+      <p class="pera_ticket" style="font-size:50px;"> <span id="ticketPriceText" >120</span>-Single Ticket Adult</p>
+    </div>
+    <div class="details">
+      <p id="pDate">Purchase Date: 13/07/2025</p>
+      <p id="pTime">08:17:15</p>
+      <p>Valid Until <span style="padding-left: 30px;">:</span> <span id="untilDate"> 13/07/2025</span> <span id="untilTime">10:17</span></p>
+      <p>Sam Id<span style="padding-left: 210px;">:</span> <span id="samId">05220409</span></p>
+      <p>Kiosk/Term No<span style="padding-left: 0px;">:</span> <span id="kioskNo">1230000001/ 10122</span></p>
+    </div>
+  </div>
+
+  <aside class="controls">
+    <div class="card p-3 shadow-sm">
+      <strong>Controls</strong>
+
+      <label>Code Suffix</label>
+      <div class="d-flex gap-1">
+        <input id="part1" class="form-control form-control-sm" value="2507" />
+        <input id="part2" class="form-control form-control-sm" value="02810" />
+        <input id="part3" class="form-control form-control-sm" value="0011" />
+        <input id="part4" class="form-control form-control-sm" value="0" />
+      </div>
+
+      <label class="mt-2">Term Suffix</label>
+      <input id="termSuffix" class="form-control form-control-sm" value="10122" />
+
+      <label>Sam Id</label>
+      <input id="samIdInput" class="form-control form-control-sm" value="05220409" />
+
+      <label>Start Time</label>
+      <input id="timeInput" type="time" class="form-control form-control-sm" />
+
+      <label>Ticket Price</label>
+      <input id="priceInput" type="number" class="form-control form-control-sm" value="120" />
+
+      <button id="downloadBtn" class="btn btn-dark btn-sm mt-3">Download PDF & PNG</button>
+    </div>
+  </aside>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  // Function to get users from localStorage
+  function getUsers() {
+      try {
+          const raw = localStorage.getItem('users');
+          return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+          return [];
+      }
+  }
+
+  // Check for logged-in user on page load
+  document.addEventListener('DOMContentLoaded', () => {
+      const currentUserEmail = localStorage.getItem('currentUserEmail');
+      const welcomeBar = document.getElementById('welcomeBar');
+      const welcomeName = document.getElementById('welcomeName');
+
+      if (currentUserEmail) {
+          const users = getUsers();
+          const user = users.find(u => u.email === currentUserEmail);
+          if (user) {
+              // Display welcome message and show the bar
+              welcomeName.textContent = `${user.firstName} ${user.lastName}`;
+              welcomeBar.classList.remove('hidden');
+          } else {
+              // If user not found, redirect to login
+              window.location.href = 'index.html'; // Assuming your login page is index.html
+          }
+      } else {
+          // If no user is logged in, redirect to login
+          window.location.href = 'index.html'; // Assuming your login page is index.html
+      }
+  });
+
+  // Logout functionality
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('currentUserEmail');
+      window.location.href = 'index.html'; // Redirect to login page after logout
+  });
+</script>
+<script>
+ const topCodeEl = document.getElementById('topCode');
+const pDateEl = document.getElementById('pDate');
+const pTimeEl = document.getElementById('pTime');
+const untilDateEl = document.getElementById('untilDate');
+const untilTimeEl = document.getElementById('untilTime');
+const kioskNoEl = document.getElementById('kioskNo');
+const samIdEl = document.getElementById('samId');
+const ticketPriceEl = document.getElementById('ticketPrice');
+const ticketPriceTextEl = document.getElementById('ticketPriceText');
+
+const part1 = document.getElementById('part1');
+const part2 = document.getElementById('part2');
+const part3 = document.getElementById('part3');
+const part4 = document.getElementById('part4');
+
+const termSuffixInput = document.getElementById('termSuffix');
+const samIdInput = document.getElementById('samIdInput');
+const priceInput = document.getElementById('priceInput');
+const timeInput = document.getElementById('timeInput');
+
+const TOP_PREFIX = '32-001-';
+const KIOSK_PREFIX = '1230000001/';
+
+const currentUserEmail = localStorage.getItem('currentUserEmail');
+let savedData = JSON.parse(localStorage.getItem('ticketLock')) || {};
+savedData = savedData[currentUserEmail] || {};
+
+let customStart = null;
+
+// Load saved values if exist
+if (savedData.part1) part1.value = savedData.part1;
+if (savedData.part2) part2.value = savedData.part2;
+if (savedData.part3) part3.value = savedData.part3;
+if (savedData.part4) part4.value = savedData.part4;
+if (savedData.termSuffix) termSuffixInput.value = savedData.termSuffix;
+if (savedData.samId) samIdInput.value = savedData.samId;
+if (savedData.price) priceInput.value = savedData.price;
+if (savedData.time) {
+  timeInput.value = savedData.time;
+  const [hh, mm] = savedData.time.split(':').map(Number);
+  const now = new Date();
+  customStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, mm, 0);
+}
+
+function saveUserData() {
+  const allLocks = JSON.parse(localStorage.getItem('ticketLock')) || {};
+  allLocks[currentUserEmail] = {
+    part1: part1.value,
+    part2: part2.value,
+    part3: part3.value,
+    part4: part4.value,
+    termSuffix: termSuffixInput.value,
+    samId: samIdInput.value,
+    price: priceInput.value,
+    time: timeInput.value
+  };
+  localStorage.setItem('ticketLock', JSON.stringify(allLocks));
+}
+
+function applyEdits() {
+  const suffix = `${part1.value}-${part2.value}-${part3.value}-${part4.value}`;
+  topCodeEl.textContent = TOP_PREFIX + suffix;
+  kioskNoEl.textContent = KIOSK_PREFIX + termSuffixInput.value;
+  samIdEl.textContent = samIdInput.value;
+  ticketPriceEl.textContent = priceInput.value;
+  ticketPriceTextEl.textContent = priceInput.value;
+}
+
+// Add event listeners for live saving
+[part1, part2, part3, part4, termSuffixInput, samIdInput, priceInput].forEach(input => {
+  input.addEventListener('input', () => {
+    applyEdits();
+    saveUserData();
+  });
+});
+
+// Time input
+timeInput.addEventListener('change', () => {
+  if (timeInput.value) {
+    const [hh, mm] = timeInput.value.split(':').map(Number);
+    const now = new Date();
+    customStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, mm, 0);
+    updateTimeDisplay(customStart);
+    saveUserData();
+  } else {
+    customStart = null;
+    saveUserData();
+  }
+});
+
+function updateTimeDisplay(baseTime) {
+  const pad = n => String(n).padStart(2, '0');
+  pDateEl.textContent = `Purchase Date: ${pad(baseTime.getDate())}/${pad(baseTime.getMonth()+1)}/${baseTime.getFullYear()}`;
+  pTimeEl.textContent = `${pad(baseTime.getHours())}:${pad(baseTime.getMinutes())}:${pad(baseTime.getSeconds())}`;
+  const plus2 = new Date(baseTime.getTime() + 2*60*60*1000);
+  untilDateEl.textContent = `${pad(plus2.getDate())}/${pad(plus2.getMonth()+1)}/${plus2.getFullYear()}`;
+  untilTimeEl.textContent = `${pad(plus2.getHours())}:${pad(plus2.getMinutes())}`;
+}
+
+// Tick every second
+function tick() {
+  if (customStart) {
+    customStart = new Date(customStart.getTime() + 1000);
+    updateTimeDisplay(customStart);
+  } else {
+    const now = new Date();
+    updateTimeDisplay(now);
+  }
+}
+tick();
+setInterval(tick, 1000);
+
+// Download button
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  applyEdits();
+  saveUserData(); // ensure current values saved
+
+  const receipt = document.getElementById('pdfRoot');
+  receipt.style.visibility = "visible";
+  receipt.style.position = "absolute";
+  receipt.style.left = "-9999px";
+  await new Promise(r => setTimeout(r, 100));
+
+  const canvas = await html2canvas(receipt, { scale: 2, useCORS:true });
+  const imgData = canvas.toDataURL('image/png');
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'px', [969,1620]);
+  pdf.addImage(imgData, 'PNG', 0, 0, 969, 1620);
+  pdf.save('ticket.pdf');
+
+  canvas.toBlob(blob => {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'ticket.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, 'image/png');
+
+  receipt.style.visibility = "hidden";
+});
+  </script>
+  
+  
+</body>
+</html>
