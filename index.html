@@ -21,7 +21,7 @@ body {
   gap: 20px;
 }
 .pdf {
-  width: 959px;
+  width: 969px;
   height: 1620px;
   background: #fff;
   padding: 20px;
@@ -208,8 +208,8 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
 
   // PDF
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'px', [849,1620]);
-  pdf.addImage(imgData, 'PNG', 0, 0, 849, 1620);
+  const pdf = new jsPDF('p', 'px', [969,1620]);
+  pdf.addImage(imgData, 'PNG', 0, 0, 969, 1620);
   pdf.save('ticket.pdf');
 
   // PNG
