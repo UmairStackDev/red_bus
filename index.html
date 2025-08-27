@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ticket</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
 
 <style>
 body {
@@ -17,31 +21,46 @@ body {
   gap: 20px;
 }
 .pdf {
-  width: 849px;
-  height: 1280px;
+  width: 959px;
+  height: 1620px;
   background: #fff;
   padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 120px;
   position: absolute;
-  left: -9999px; /* screen se bahar */
+  left: -9999px; 
   top: 0;
 }
 .top_code {
-  font-size: 44px;
+  font-size: 60px;
   font-weight: 500;
-  margin: 10px 0;
+  margin: 10px 0; 
+  padding-left: 54px;
 }
+
+.top_code .dash {
+  font-size: 0px; /* chhota dash */
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 5px; /* thodi spacing */
+}
+
 img.qr {
   width: auto;
-  height: 540px;
+  height: 665px;
   margin: 10px 0;
+
 }
 .price {
   text-align: center;
   padding-top: 15px;
+  line-height: 1.2;
+  padding-bottom: 55px;
+  padding-top: 50px;
+  padding-left: 40px;
 }
 .price span {
   display: inline-block;
@@ -49,11 +68,12 @@ img.qr {
 .details {
   padding-top: 20px;
   width: 100%;
-  font-size: 40px;
-  line-height: 1.5;
+  font-size: 50px;
+  line-height: 0.8;
+  white-space: nowrap;
 }
 .controls {
-  max-width: 400px;
+  max-width: 330px;
   width: 400px;
 }
 main{
@@ -64,27 +84,36 @@ main{
   align-items: center;
   justify-content: center;
 }
+.pera_ticket{
+  padding-left: 55px;
+}
 </style>
 </head>
 <body>
 
 <main class="d-flex gap-4 ">
-  <div class="pdf" id="pdfRoot" style="visibility: hidden;">
-    <p class="top_code" id="topCode">32-001-2507-02810-0011-0</p>
+  <div class="pdf" id="pdfRoot" style="visibility:hidden;">
+    <p class="top_code" id="topCode">
+      32<span class="dash">-</span>001<span class="dash">-</span>2507<span class="dash">-</span>02810<span class="dash">-</span>0011<span class="dash">-</span>0
+    </p>
+    
+    
+    <br>
     <img class="qr" src="./img/qrcode.jpeg" alt="QR Code" />
     <div class="price">
-      <p style="font-size:54px; font-weight: bold;">
-        <span id="ticketPrice">120</span> 
-        <span style="font-family: Arial, Helvetica, sans-serif; font-size:45px; font-weight:400;">PKR</span>
+      <p style="font-family: Arial, Helvetica, sans-serif ; font-size:63px; font-weight:400; letter-spacing: 0.9px; margin-bottom: 4px; color: #222; ">
+        <span id="ticketPrice" style="letter-spacing: 2px; padding-left:50px;">120</span> 
+        <span style="font-family: Arial, Helvetica, sans-serif; font-size:63px; font-weight:400; padding-left: 30px;">PKR</span>
       </p>
-      <p class="pera_ticket" style="font-size:38px;"> <span id="ticketPriceText">120</span>-Single Ticket Adult</p>
+      
+      <p class="pera_ticket" style="font-size:50px;"> <span id="ticketPriceText" >120</span>-Single Ticket Adult</p>
     </div>
     <div class="details">
       <p id="pDate">Purchase Date: 13/07/2025</p>
       <p id="pTime">08:17:15</p>
-      <p>Valid Until <span style="padding-left: 24px;">:</span> <span id="untilDate">13/07/2025</span> <span id="untilTime">10:17</span></p>
-      <p>Sam Id<span style="padding-left: 169px;">:</span> <span id="samId">05220409</span></p>
-      <p>Kiosk/Term No<span style="padding-left: 2px;">:</span> <span id="kioskNo">1230000001/10122</span></p>
+      <p>Valid Until <span style="padding-left: 30px;">:</span> <span id="untilDate"> 13/07/2025</span> <span id="untilTime">10:17</span></p>
+      <p>Sam Id<span style="padding-left: 210px;">:</span> <span id="samId">05220409</span></p>
+      <p>Kiosk/Term No<span style="padding-left: 0px;">:</span> <span id="kioskNo">1230000001/ 10122</span></p>
     </div>
   </div>
 
@@ -108,6 +137,21 @@ main{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
+  function applyEdits() {
+  // codeSuffix ko dash ke basis pe split karo
+  const parts = codeSuffixInput.value.split('-');
+
+  // har part ke beech dash span insert karo
+  const html = parts.map((p, i) => i > 0 ? `<span class="dash">-</span>${p}` : p).join('');
+
+  topCodeEl.innerHTML = TOP_PREFIX + html;
+
+  kioskNoEl.textContent = KIOSK_PREFIX + termSuffixInput.value;
+  samIdEl.textContent = samIdInput.value;
+  ticketPriceEl.textContent = priceInput.value;
+  ticketPriceTextEl.textContent = priceInput.value;
+}
+
 const topCodeEl = document.getElementById('topCode');
 const pDateEl = document.getElementById('pDate');
 const pTimeEl = document.getElementById('pTime');
@@ -164,8 +208,8 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
 
   // PDF
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'px', [849,1280]);
-  pdf.addImage(imgData, 'PNG', 0, 0, 849, 1280);
+  const pdf = new jsPDF('p', 'px', [849,1620]);
+  pdf.addImage(imgData, 'PNG', 0, 0, 849, 1620);
   pdf.save('ticket.pdf');
 
   // PNG
