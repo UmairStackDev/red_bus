@@ -28,6 +28,9 @@ body {
   flex-direction: column;
   align-items: center;
   padding-top: 120px;
+  position: absolute;
+  left: -9999px; 
+  top: 0;
 }
 .top_code {
   font-size: 62px;
@@ -98,7 +101,7 @@ main{
     <button id="logoutBtn" class="btn btn-sm btn-outline-dark">Logout</button>
   </div>
 
-  <div class="pdf" id="pdfRoot" style="visibility:visible;">
+  <div class="pdf" id="pdfRoot" style="visibility:hidden;">
     <p class="top_code" id="topCode"></p>
     
     <br>
@@ -116,7 +119,7 @@ main{
     <div class="details">
       <p id="pDate">Purchase Date: 13/07/2025</p>
       <p id="pTime">08:17:15</p> 
-      <p>Valid Until <span style="padding-left: 30px;">:</span> <span id="untilDate">13/07/2025</span> <span id="untilTime">10:17</span></p>
+      <p>Valid Until <span style="padding-left: 30px;">:</span> <span id="untilDate">13/07/2025</span><span id="untilTime" style="padding-left: 18px;">10:17</span></p>
       <p>Sam Id<span style="padding-left: 218px;">:</span> <span id="samId">05220409</span></p>
       <p>Kiosk/Term No<span style="padding-left: 0px;">:</span> <span id="kioskNo">1230000001/10122</span></p>
     </div>
@@ -314,12 +317,15 @@ function tick() {
 }
 tick();
 setInterval(tick, 1000);
-
+// Download button
 document.getElementById('downloadBtn').addEventListener('click', async () => {
   applyEdits();
-  saveUserData();
+  saveUserData(); // ensure current values saved
 
   const receipt = document.getElementById('pdfRoot');
+  receipt.style.visibility = "visible";
+  receipt.style.position = "absolute";
+  receipt.style.left = "-9999px";
   await new Promise(r => setTimeout(r, 100));
 
   const canvas = await html2canvas(receipt, { scale: 2, useCORS:true });
@@ -341,6 +347,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
 
   receipt.style.visibility = "hidden";
 });
+
 </script>
 </body>
 </html>
