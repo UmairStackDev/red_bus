@@ -6,7 +6,8 @@
 <title>Ticket</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 <style>
 body {
   font-family: "Courier New", Courier, monospace;
@@ -18,8 +19,8 @@ body {
   gap: 20px;
 }
 .pdf {
-  width: 969px;
-  height: 1620px;
+  width: 1000px;
+  height: 1720px;
   background: #fff;
   padding: 20px;
   box-sizing: border-box;
@@ -27,21 +28,12 @@ body {
   flex-direction: column;
   align-items: center;
   padding-top: 120px;
-  position: absolute;
-  left: -9999px; 
-  top: 0;
 }
 .top_code {
-  font-size: 60px;
+  font-size: 62px;
   font-weight: 500;
   margin: 10px 0; 
   padding-left: 54px;
-}
-.top_code .dash {
-  font-size: 0px;
-  line-height: 1;
-  vertical-align: middle;
-  margin: 0 5px;
 }
 img.qr {
   width: auto;
@@ -50,10 +42,8 @@ img.qr {
 }
 .price {
   text-align: center;
-  padding-top: 15px;
-  line-height: 1.2;
-  padding-bottom: 55px;
   padding-top: 50px;
+  padding-bottom: 55px;
   padding-left: 40px;
 }
 .price span {
@@ -62,7 +52,7 @@ img.qr {
 .details {
   padding-top: 20px;
   width: 100%;
-  font-size: 50px;
+  font-size: 52px;
   line-height: 0.8;
   white-space: nowrap;
 }
@@ -81,6 +71,21 @@ main{
 .pera_ticket{
   padding-left: 55px;
 }
+.one-light {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 45px;
+}
+.one-light-kiosk {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 46px;
+}
+.one-light-topcode {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 54px;
+}
 </style>
 </head>
 <body>
@@ -93,27 +98,27 @@ main{
     <button id="logoutBtn" class="btn btn-sm btn-outline-dark">Logout</button>
   </div>
 
-  <div class="pdf" id="pdfRoot" style="visibility:hidden;">
-    <p class="top_code" id="topCode">
-      32<span class="dash">-</span>001<span class="dash">-</span>2507<span class="dash">-</span>02810<span class="dash">-</span>0011<span class="dash">-</span>0
-    </p>
+  <div class="pdf" id="pdfRoot" style="visibility:visible;">
+    <p class="top_code" id="topCode"></p>
     
     <br>
     <img class="qr" src="./img/qrcode.jpeg" alt="QR Code" />
     <div class="price">
-      <p style="font-family: Arial, Helvetica, sans-serif ; font-size:63px; font-weight:400; letter-spacing: 0.9px; margin-bottom: 4px; color: #222; ">
-        <span id="ticketPrice" style="letter-spacing: 2px; padding-left:50px;">120</span> 
-        <span style="font-family: Arial, Helvetica, sans-serif; font-size:63px; font-weight:400; padding-left: 30px;">PKR</span>
+      <p style="font-family: Arial, Helvetica, sans-serif ; font-size:68px; font-weight:400; letter-spacing: 0.9px; margin-bottom: 4px; color: #222; ">
+        <span id="ticketPrice" style="letter-spacing: 2px; padding-left:50px; ">120</span> 
+        <span style="font-family: Arial, Helvetica, sans-serif; font-size:68px; font-weight:400; padding-left: 30px;">PKR</span>
       </p>
       
-      <p class="pera_ticket" style="font-size:50px;"> <span id="ticketPriceText" >120</span>-Single Ticket Adult</p>
+      <p class="pera_ticket" style="font-size:52px;"> 
+        <span id="ticketPriceText" style="font-family: 'Roboto', Arial, Helvetica, sans-serif; font-weight: 300; font-size: 43px;">120</span>-Single Ticket Adult
+      </p>
     </div>
     <div class="details">
       <p id="pDate">Purchase Date: 13/07/2025</p>
-      <p id="pTime">08:17:15</p>
-      <p>Valid Until <span style="padding-left: 30px;">:</span> <span id="untilDate"> 13/07/2025</span> <span id="untilTime">10:17</span></p>
-      <p>Sam Id<span style="padding-left: 210px;">:</span> <span id="samId">05220409</span></p>
-      <p>Kiosk/Term No<span style="padding-left: 0px;">:</span> <span id="kioskNo">1230000001/ 10122</span></p>
+      <p id="pTime">08:17:15</p> 
+      <p>Valid Until <span style="padding-left: 30px;">:</span> <span id="untilDate">13/07/2025</span> <span id="untilTime">10:17</span></p>
+      <p>Sam Id<span style="padding-left: 218px;">:</span> <span id="samId">05220409</span></p>
+      <p>Kiosk/Term No<span style="padding-left: 0px;">:</span> <span id="kioskNo">1230000001/10122</span></p>
     </div>
   </div>
 
@@ -169,27 +174,25 @@ main{
           const users = getUsers();
           const user = users.find(u => u.email === currentUserEmail);
           if (user) {
-              // Display welcome message and show the bar
               welcomeName.textContent = `${user.firstName} ${user.lastName}`;
               welcomeBar.classList.remove('hidden');
           } else {
-              // If user not found, redirect to login
-              window.location.href = 'index.html'; // Assuming your login page is index.html
+              window.location.href = 'index.html';
           }
       } else {
-          // If no user is logged in, redirect to login
-          window.location.href = 'index.html'; // Assuming your login page is index.html
+          window.location.href = 'index.html';
       }
   });
 
   // Logout functionality
   document.getElementById('logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('currentUserEmail');
-      window.location.href = 'index.html'; // Redirect to login page after logout
+      window.location.href = 'index.html';
   });
 </script>
+
 <script>
- const topCodeEl = document.getElementById('topCode');
+const topCodeEl = document.getElementById('topCode');
 const pDateEl = document.getElementById('pDate');
 const pTimeEl = document.getElementById('pTime');
 const untilDateEl = document.getElementById('untilDate');
@@ -250,14 +253,26 @@ function saveUserData() {
 
 function applyEdits() {
   const suffix = `${part1.value}-${part2.value}-${part3.value}-${part4.value}`;
-  topCodeEl.textContent = TOP_PREFIX + suffix;
-  kioskNoEl.textContent = KIOSK_PREFIX + termSuffixInput.value;
-  samIdEl.textContent = samIdInput.value;
+
+  // topCode -> one-light-topcode
+  topCodeEl.innerHTML = (TOP_PREFIX + suffix)
+    .toString()
+    .replace(/1/g, '<span class="one-light-topcode">1</span>');
+
+  // kioskNo -> one-light-kiosk
+  kioskNoEl.innerHTML = (KIOSK_PREFIX + termSuffixInput.value)
+    .toString()
+    .replace(/1/g, '<span class="one-light-kiosk">1</span>');
+
+  // Sam Id -> one-light
+  samIdEl.innerHTML = samIdInput.value
+    .toString()
+    .replace(/1/g, '<span class="one-light">1</span>');
+
   ticketPriceEl.textContent = priceInput.value;
   ticketPriceTextEl.textContent = priceInput.value;
 }
 
-// Add event listeners for live saving
 [part1, part2, part3, part4, termSuffixInput, samIdInput, priceInput].forEach(input => {
   input.addEventListener('input', () => {
     applyEdits();
@@ -265,7 +280,6 @@ function applyEdits() {
   });
 });
 
-// Time input
 timeInput.addEventListener('change', () => {
   if (timeInput.value) {
     const [hh, mm] = timeInput.value.split(':').map(Number);
@@ -281,43 +295,39 @@ timeInput.addEventListener('change', () => {
 
 function updateTimeDisplay(baseTime) {
   const pad = n => String(n).padStart(2, '0');
-  pDateEl.textContent = `Purchase Date: ${pad(baseTime.getDate())}/${pad(baseTime.getMonth()+1)}/${baseTime.getFullYear()}`;
-  pTimeEl.textContent = `${pad(baseTime.getHours())}:${pad(baseTime.getMinutes())}:${pad(baseTime.getSeconds())}`;
+  const replaceOnes = str => str.replace(/1/g, '<span class="one-light">1</span>');
+
+  pDateEl.innerHTML = replaceOnes(`Purchase Date: ${pad(baseTime.getDate())}/${pad(baseTime.getMonth()+1)}/${baseTime.getFullYear()}`);
+  pTimeEl.innerHTML = replaceOnes(`${pad(baseTime.getHours())}:${pad(baseTime.getMinutes())}:${pad(baseTime.getSeconds())}`);
   const plus2 = new Date(baseTime.getTime() + 2*60*60*1000);
-  untilDateEl.textContent = `${pad(plus2.getDate())}/${pad(plus2.getMonth()+1)}/${plus2.getFullYear()}`;
-  untilTimeEl.textContent = `${pad(plus2.getHours())}:${pad(plus2.getMinutes())}`;
+  untilDateEl.innerHTML = replaceOnes(`${pad(plus2.getDate())}/${pad(plus2.getMonth()+1)}/${plus2.getFullYear()}`);
+  untilTimeEl.innerHTML = replaceOnes(`${pad(plus2.getHours())}:${pad(plus2.getMinutes())}`);
 }
 
-// Tick every second
 function tick() {
   if (customStart) {
     customStart = new Date(customStart.getTime() + 1000);
     updateTimeDisplay(customStart);
   } else {
-    const now = new Date();
-    updateTimeDisplay(now);
+    updateTimeDisplay(new Date());
   }
 }
 tick();
 setInterval(tick, 1000);
 
-// Download button
 document.getElementById('downloadBtn').addEventListener('click', async () => {
   applyEdits();
-  saveUserData(); // ensure current values saved
+  saveUserData();
 
   const receipt = document.getElementById('pdfRoot');
-  receipt.style.visibility = "visible";
-  receipt.style.position = "absolute";
-  receipt.style.left = "-9999px";
   await new Promise(r => setTimeout(r, 100));
 
   const canvas = await html2canvas(receipt, { scale: 2, useCORS:true });
   const imgData = canvas.toDataURL('image/png');
 
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'px', [969,1620]);
-  pdf.addImage(imgData, 'PNG', 0, 0, 969, 1620);
+  const pdf = new jsPDF('p', 'px', [1000,1720]);
+  pdf.addImage(imgData, 'PNG', 0, 0, 1000, 1720);
   pdf.save('ticket.pdf');
 
   canvas.toBlob(blob => {
@@ -331,8 +341,6 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
 
   receipt.style.visibility = "hidden";
 });
-  </script>
-  
-  
+</script>
 </body>
 </html>
